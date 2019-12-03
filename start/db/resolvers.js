@@ -2,7 +2,10 @@
 
 module.exports = {
   Query: {
-    user: async (_, { id }) => {},
+    user: async (_, { id }, { dataSources }) => {
+      const user = await dataSources.userAPI.findById({ id })
+      return user.error ? { success: false, message: user.error } : { success: true, user }
+    },
     recentFavorites: () => {},
     song: async (_, { id }) => {},
   },
