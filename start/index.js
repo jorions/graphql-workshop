@@ -10,15 +10,18 @@ const typeDefs = require('./db/schema')
 const resolvers = require('./db/resolvers')
 
 const UserAPI = require('./dataSources/user')
+const SongAPI = require('./dataSources/song')
 
 const store = createModels()
 const userAPI = new UserAPI({ store })
+const songAPI = new SongAPI({ store })
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
   dataSources: () => ({
     userAPI,
+    songAPI,
   }),
 })
 

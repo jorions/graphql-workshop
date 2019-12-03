@@ -38,6 +38,6 @@ module.exports = {
     user: async ({ userId }) => {},
   },
   User: {
-    favorites: ({ id }) => {},
+    favorites: ({ id }, _, { dataSources }) => dataSources.songAPI.findByUserId({ userId: id }),
   },
 }
