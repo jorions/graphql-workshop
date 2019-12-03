@@ -21,6 +21,11 @@ class SongAPI extends DataSource {
     this.context = config.context
   }
 
+  async findById({ id }) {
+    const song = await this.store.songs.findOne({ where: { id } })
+    return song ? formatSong(song) : { error: 'noSong' }
+  }
+
   async findByUserId({ userId }) {
     const songs = await this.store.songs.findAll({ where: { userId }, order: [['createdAt', 'DESC']] })
     return songs.map(formatSong)

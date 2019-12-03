@@ -14,7 +14,14 @@ module.exports = {
       return user.error ? { success: false, message: user.error } : { success: true, user }
     },
     recentFavorites: (_, __, { dataSources }) => dataSources.songAPI.recentFavorites(),
-    song: async (_, { id }) => {},
+    song: async (_, { id }, { dataSources }) => {
+      const song = await dataSources.songAPI.findById({ id })
+      if (song.error) return { success: false, message: song.error }
+
+      const { artist, name } = song
+      const lyrics = await dataSources.lyricsAPI.getLyrics({ artist, name })
+      return { success: true, song: { ...song, lyrics: lyrics.error ? null : lyrics } }
+    },
   },
   Mutation: {
     signUp: async (_, { email, password }, { dataSources }) => {

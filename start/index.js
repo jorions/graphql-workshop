@@ -11,12 +11,14 @@ const typeDefs = require('./db/schema')
 const resolvers = require('./db/resolvers')
 
 const UserAPI = require('./dataSources/user')
+const LyricsAPI = require('./dataSources/lyrics')
 const SongAPI = require('./dataSources/song')
 
 const { TOKEN_SECRET } = process.env
 
 const store = createModels()
 const userAPI = new UserAPI({ store })
+const lyricsAPI = new LyricsAPI()
 
 const server = new ApolloServer({
   context: async ({ req }) => {
@@ -36,6 +38,7 @@ const server = new ApolloServer({
   dataSources: () => {
     return {
       userAPI,
+      lyricsAPI,
       songAPI: new SongAPI({ store }),
     }
   },
