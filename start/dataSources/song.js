@@ -21,6 +21,11 @@ class SongAPI extends DataSource {
     const songs = await this.store.songs.findAll({ where: { userId }, order: [['createdAt', 'DESC']] })
     return songs.map(formatSong)
   }
+
+  async recentFavorites() {
+    const songs = await this.store.songs.findAll({ limit: 20, order: [['createdAt', 'DESC']] })
+    return songs.map(formatSong)
+  }
 }
 
 module.exports = SongAPI
