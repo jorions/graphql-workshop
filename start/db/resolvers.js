@@ -23,7 +23,13 @@ module.exports = {
       const token = await generateToken(user)
       return { success: true, token }
     },
-    logIn: async (_, { email, password }) => {},
+    logIn: async (_, { email, password }, { dataSources }) => {
+      const user = await dataSources.userAPI.logIn({ email, password })
+      if (user.error) return { success: false, message: user.error }
+
+      const token = await generateToken(user)
+      return { success: true, token }
+    },
     addFavorite: async (_, { artist, name, reason }) => {},
     updateFavorite: async (_, { id, reason }) => {},
     removeFavorite: async (_, { id }) => {},
