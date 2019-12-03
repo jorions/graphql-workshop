@@ -1,5 +1,11 @@
 'use strict'
 
+const jwt = require('jsonwebtoken')
+
+const { TOKEN_SECRET } = process.env
+
+const generateToken = ({ email, id }) => jwt.sign({ data: { email, id } }, TOKEN_SECRET, { expiresIn: '24h' })
+
 module.exports = {
   Query: {
     user: async (_, { id }, { dataSources }) => {
@@ -10,7 +16,13 @@ module.exports = {
     song: async (_, { id }) => {},
   },
   Mutation: {
-    signUp: async (_, { email, password }) => {},
+    signUp: async (_, { email, password }, { dataSources }) => {
+      const user = await dataSources.userAPI.signUp({ email, password })
+      if (user.error) return { success: false, message: user.error }
+
+      const token = await generateToken(user)
+      return { success: true, token }
+    },
     logIn: async (_, { email, password }) => {},
     addFavorite: async (_, { artist, name, reason }) => {},
     updateFavorite: async (_, { id, reason }) => {},
