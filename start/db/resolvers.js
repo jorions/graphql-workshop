@@ -1,5 +1,6 @@
 'use strict'
 
+const { ForbiddenError } = require('apollo-server')
 const jwt = require('jsonwebtoken')
 
 const { TOKEN_SECRET } = process.env
@@ -30,7 +31,11 @@ module.exports = {
       const token = await generateToken(user)
       return { success: true, token }
     },
-    addFavorite: async (_, { artist, name, reason }) => {},
+    addFavorite: async (_, { artist, name, reason }, { dataSources, userId }) => {
+      if (!userId) throw new ForbiddenError('You do not have permission to make this change')
+      const song = await dataSources.songAPI.addFavorite({ artist, name, reason })
+      return song.error ? { success: false, message: song.error } : { success: true, song }
+    },
     updateFavorite: async (_, { id, reason }) => {},
     removeFavorite: async (_, { id }) => {},
   },
