@@ -36,7 +36,11 @@ module.exports = {
       const song = await dataSources.songAPI.addFavorite({ artist, name, reason })
       return song.error ? { success: false, message: song.error } : { success: true, song }
     },
-    updateFavorite: async (_, { id, reason }) => {},
+    updateFavorite: async (_, { id, reason }, { dataSources, userId }) => {
+      if (!userId) throw new ForbiddenError('You do not have permission to make this change')
+      const song = await dataSources.songAPI.updateFavorite({ id, reason })
+      return song.error ? { success: false, message: song.error } : { success: true, song }
+    },
     removeFavorite: async (_, { id }) => {},
   },
   Song: {
