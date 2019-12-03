@@ -1,0 +1,32 @@
+{
+  "name": "graphql-workshop",
+  "version": "1.0.0",
+  "scripts": {
+    "db:create": "node scripts/createDB.js",
+    "dev": "cross-env NODE_ENV=development nodemon index.js | bunyan"
+  },
+  "dependencies": {
+    "apollo-datasource": "^0.6.3",
+    "apollo-datasource-rest": "^0.6.5",
+    "apollo-server": "^2.9.5",
+    "bcrypt": "^3.0.6",
+    "bunyan": "^1.8.12",
+    "dotenv": "^8.2.0",
+    "graphql": "^14.5.8",
+    "jsonwebtoken": "^8.5.1",
+    "sequelize": "^5.19.7",
+    "sqlite3": "^4.1.0"
+  },
+  "devDependencies": {
+    "apollo": "^2.21.0",
+    "cross-env": "^5.2.1",
+    "eslint": "^6.3.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-prettier": "^6.2.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jest": "^22.17.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "nodemon": "^1.19.4",
+    "prettier": "^1.18.2"
+  }
+}
