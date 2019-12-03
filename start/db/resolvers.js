@@ -35,7 +35,11 @@ module.exports = {
     removeFavorite: async (_, { id }) => {},
   },
   Song: {
-    user: async ({ userId }) => {},
+    user: async ({ userId }, _, { dataSources }) => {
+      const user = await dataSources.userAPI.findById({ id: userId })
+      // If null is returned here, entire Song will be returned as null
+      return user.error ? null : user
+    },
   },
   User: {
     favorites: ({ id }, _, { dataSources }) => dataSources.songAPI.findByUserId({ userId: id }),
